@@ -7,9 +7,9 @@ import (
 
 type User struct {
 	gorm.Model
-	firstName string
-	lastName  string
-	role      Role
+	FirstName string
+	LastName  string
+	Role      Role
 }
 
 type Role int
@@ -32,12 +32,12 @@ type UserService interface {
 }
 
 func (user *User) FullName() (string, error) {
-	if user.firstName == "" && user.lastName == "" {
+	if user.FirstName == "" && user.LastName == "" {
 		return "", errors.New("user name is empty")
 	}
-	return user.firstName + " " + user.lastName, nil
+	return user.FirstName + " " + user.LastName, nil
 }
 
-func CreateUser(id int, fn string, ln string, role Role) (*User, error) {
-	return &User{id: id, firstName: fn, lastName: ln, role: role}, nil
+func CreateUser(fn string, ln string, role Role) (*User, error) {
+	return &User{FirstName: fn, LastName: ln, Role: role}, nil
 }
