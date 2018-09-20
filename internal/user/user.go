@@ -1,9 +1,12 @@
 package user
 
-import "errors"
+import (
+	"errors"
+	"github.com/jinzhu/gorm"
+)
 
 type User struct {
-	id        int
+	gorm.Model
 	firstName string
 	lastName  string
 	role      Role
