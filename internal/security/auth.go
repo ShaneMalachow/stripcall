@@ -14,7 +14,7 @@ type Auth struct {
 	PasswordHash []byte
 }
 
-func (auth Auth) CheckPassword(password []byte) (bool, error){
+func (auth Auth) CheckPassword(password []byte) (bool, error) {
 	err := bcrypt.CompareHashAndPassword(auth.PasswordHash, password)
 	if err != nil {
 		log.Println(err)
@@ -25,9 +25,9 @@ func (auth Auth) CheckPassword(password []byte) (bool, error){
 
 func HashNewPassword(password []byte) ([]byte, error) {
 	saltAndHash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
-	if err != nil{
+	if err != nil {
 		log.Println(err)
-		return make([]byte, 0) ,err
+		return make([]byte, 0), err
 	}
 	return saltAndHash, nil
 }
