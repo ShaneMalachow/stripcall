@@ -17,7 +17,7 @@ func main() {
 	}
 	defer db.Close()
 	db.AutoMigrate(&user.User{}, &security.Auth{})
-	testUser := user.User{FirstName: "Shane", LastName: "Malachow", Role: user.Armorer}
+	testUser := user.User{FirstName: "Shane", LastName: "Malachow", Armorer: true, Admin: true}
 	fmt.Println(testUser)
 	db.Create(&testUser)
 

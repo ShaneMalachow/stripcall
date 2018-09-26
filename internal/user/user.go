@@ -7,9 +7,15 @@ import (
 
 type User struct {
 	gorm.Model
-	FirstName string
-	LastName  string
-	Role      Role
+	FirstName       string
+	LastName        string
+	Admin           bool
+	Armorer         bool
+	Medical         bool
+	Referee         bool
+	BoutCommittee   bool
+	HeadTech        bool
+	RefereeAssigner bool
 }
 
 type Role int
@@ -36,8 +42,4 @@ func (user *User) FullName() (string, error) {
 		return "", errors.New("user name is empty")
 	}
 	return user.FirstName + " " + user.LastName, nil
-}
-
-func CreateUser(fn string, ln string, role Role) (*User, error) {
-	return &User{FirstName: fn, LastName: ln, Role: role}, nil
 }

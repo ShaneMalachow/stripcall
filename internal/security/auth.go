@@ -14,6 +14,10 @@ type Auth struct {
 	PasswordHash []byte
 }
 
+type AuthService struct {
+	gorm.DB
+}
+
 func (auth Auth) CheckPassword(password []byte) (bool, error) {
 	err := bcrypt.CompareHashAndPassword(auth.PasswordHash, password)
 	if err != nil {
