@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
+	"github.com/ShaneMalachow/stripcall/internal"
 	"github.com/gorilla/mux"
-	"github.com/shanemalachow/stripcall/internal"
 	"log"
 )
 
@@ -12,7 +12,7 @@ func main() {
 	config := stripcall.ParseConfig(*configLocation)
 	flag.Parse()
 
-	dependencies := stripcall.DependencyMap{
+	dependencies := &stripcall.DependencyMap{
 		Conf: config,
 		DB:   stripcall.Connect(config["dbType"], config["dbConnect"]),
 	}

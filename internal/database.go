@@ -1,6 +1,9 @@
 package stripcall
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
+)
 
 func Connect(dbType string, connector string) *gorm.DB {
 	var db *gorm.DB
@@ -17,6 +20,7 @@ func Connect(dbType string, connector string) *gorm.DB {
 	db.AutoMigrate(
 		&User{},
 		&Event{},
+		&Call{},
 	)
 
 	return db
