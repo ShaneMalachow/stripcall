@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/ShaneMalachow/stripcall/internal"
 	"github.com/gorilla/mux"
+	"github.com/novafencingtech/stripcall/internal"
 	"log"
 )
 
