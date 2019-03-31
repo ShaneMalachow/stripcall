@@ -3,7 +3,8 @@ package stripcall
 type Role int
 
 const (
-	SuperAdmin Role = iota
+	Viewer Role = iota
+	Standard
 	Admin
-	Armorer
+	SuperAdmin
 )

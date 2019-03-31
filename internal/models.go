@@ -20,7 +20,7 @@ type User struct {
 	RefereeEpee   rune   `gorm:"DEFAULT:0" json:"refEpee"`
 	RefereeSaber  rune   `gorm:"DEFAULT:0" json:"refSaber"`
 	BoutCommittee bool   `gorm:"DEFAULT:false" json:"bc"`
-	Admin         bool   `gorm:"DEFAULT:false" json:"admin"`
+	RoleType      Role   `gorm:"DEFAULT:3"`
 }
 
 type Event struct {
