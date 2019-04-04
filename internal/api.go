@@ -37,14 +37,15 @@ func GetCalls(w http.ResponseWriter, r *http.Request) {
 	db := apiController.dep.DB
 	var calls []Call
 	db.Find(&calls)
-	fmt.Println(calls)
-	userText, err := json.Marshal(calls)
+	res := map[string][]Call{
+		"calls": calls,
+	}
+	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	_, _ = w.Write(userText)
 
 }
 
@@ -84,12 +85,13 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	db := apiController.dep.DB
 	var events []Event
 	db.Find(&events)
-	fmt.Println(events)
-	eventText, err := json.Marshal(events)
+	res := map[string][]Event{
+		"events": events,
+	}
+	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	_, _ = w.Write(eventText)
 }

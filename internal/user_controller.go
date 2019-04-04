@@ -17,15 +17,20 @@ var userController UserController
 
 func (con UserController) InitializeController(r *mux.Router, dep *DependencyMap) {
 	userController = con
-	r.HandleFunc("/users", GetUsers).Methods("GET")
-	r.HandleFunc("/users", CreateUser).Methods("POST")
+	userController.dep = dep
+	userController.router = r
+	r.HandleFunc("", GetUsers).Methods("GET")
+	r.HandleFunc("", CreateUser).Methods("POST")
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
 	db := userController.dep.DB
 	var users []User
 	db.Find(&users)
-	err := json.NewEncoder(w).Encode(&users)
+	res := map[string][]User{
+		"users": users,
+	}
+	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
