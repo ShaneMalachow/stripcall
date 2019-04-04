@@ -29,6 +29,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 
@@ -38,6 +39,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Error reading request")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	user := &User{}
 	err = json.NewDecoder(r.Body).Decode(&user)
@@ -45,8 +47,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error processing JSON")
 		fmt.Println("REQUEST: " + string(requestBody))
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		db.Create(&user)
-		_, _ = w.Write([]byte("success"))
+		return
 	}
+	db.Create(&user)
+	_, _ = w.Write([]byte("success"))
 }

@@ -13,6 +13,10 @@ type ApiController struct {
 	dep *DependencyMap
 }
 
+type Controller interface {
+	InitializeController(*mux.Router, *DependencyMap)
+}
+
 var apiController = &ApiController{}
 
 func ConfigRouter(r *mux.Router, dep *DependencyMap) {
@@ -38,9 +42,10 @@ func GetCalls(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		_, _ = w.Write(userText)
+		return
 	}
+	_, _ = w.Write(userText)
+
 }
 
 func CreateCall(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +54,7 @@ func CreateCall(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Error reading request")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	call := &Call{}
 	err = json.Unmarshal(requestBody, call)
@@ -56,11 +62,11 @@ func CreateCall(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error processing JSON")
 		fmt.Println("REQUEST: " + string(requestBody))
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		call.ReportTime = time.Now()
-		db.Create(&call)
-		_, _ = w.Write([]byte("success"))
+		return
 	}
+	call.ReportTime = time.Now()
+	db.Create(&call)
+	_, _ = w.Write([]byte("success"))
 }
 
 func ReceiveText(w http.ResponseWriter, r *http.Request) {
@@ -68,9 +74,9 @@ func ReceiveText(w http.ResponseWriter, r *http.Request) {
 	requestBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("Error reading request")
-	} else {
-		fmt.Println(string(requestBody))
+		return
 	}
+	fmt.Println(string(requestBody))
 
 }
 
@@ -83,7 +89,7 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		_, _ = w.Write(eventText)
+		return
 	}
+	_, _ = w.Write(eventText)
 }

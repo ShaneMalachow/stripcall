@@ -12,7 +12,7 @@ require (
 	github.com/jinzhu/now v0.0.0-20181116074157-8ec929ed50c3 // indirect
 	github.com/lib/pq v1.0.0 // indirect
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
-	github.com/shanemalachow/stripcall v0.0.0-20181124074653-5f3160750c4d
+	github.com/shanemalachow/stripcall v0.0.0-20181124074653-5f3160750c4d // indirect
 	golang.org/x/crypto v0.0.0-20190211182817-74369b46fc67 // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 )

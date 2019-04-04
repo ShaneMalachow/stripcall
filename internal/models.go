@@ -50,11 +50,12 @@ type Call struct {
 
 type Message struct {
 	gorm.Model `json:"-"`
-	Call       Call
-	CallID     Call
-	Sender     User
-	Message    string
-	StaffOnly  bool
+	Call       Call   `json:"-"`
+	CallID     uint   `json:"call"`
+	Sender     User   `json:"-"`
+	SenderID   string `json:"sender"`
+	Message    string `json:"message"`
+	StaffOnly  bool   `json:"staff"`
 }
 
 func current_time() time.Time {
