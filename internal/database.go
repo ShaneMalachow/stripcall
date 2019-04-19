@@ -2,6 +2,7 @@ package stripcall
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -19,6 +20,7 @@ func Connect(dbType string, connector string) *gorm.DB {
 	}
 
 	if err != nil {
+		fmt.Println(err.Error())
 		panic("BAD DATABASE CONNECTION")
 	}
 
