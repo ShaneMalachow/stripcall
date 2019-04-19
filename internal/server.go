@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -23,7 +24,7 @@ func Setup(r *mux.Router, dep *DependencyMap) *http.Server {
 	ConfigRouter(apiRouter, dep)
 	return &http.Server{
 		Handler:      router,
-		Addr:         "127.0.0.1:8080",
+		Addr:         os.Getenv("STRIPCALL_ADDR") + ":" + os.Getenv("STRIPCALL_PORT"),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
@@ -31,7 +32,7 @@ func Setup(r *mux.Router, dep *DependencyMap) *http.Server {
 
 func ParseConfig(confLoc string) map[string]string {
 	return map[string]string{
-		"dbType":    "sqlite3",
-		"dbConnect": "./test.sqlite",
+		"dbType":    os.Getenv("DBTYPE"),
+		"dbConnect": os.Getenv("DBCONNECTOR"),
 	}
 }
