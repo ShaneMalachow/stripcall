@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -26,6 +27,8 @@ func ConfigRouter(r *mux.Router, dep *DependencyMap) {
 	r.HandleFunc("/events", GetEvents).Methods("GET")
 	r.HandleFunc("/calls", GetCalls).Methods("GET")
 	r.HandleFunc("/calls", CreateCall).Methods("POST")
+	r.HandleFunc("/calls/{id}", GetCall).Methods("GET")
+	r.HandleFunc("/calls/{id}/messages", GetCallMessages).Methods("GET")
 	r.HandleFunc("/sms", ReceiveText).Methods("POST")
 }
 
@@ -47,6 +50,44 @@ func GetCalls(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+}
+
+func GetCall(w http.ResponseWriter, r *http.Request) {
+	db := apiController.dep.DB
+	vars := mux.Vars(r)
+	var call Call
+	db.Where(vars["id"]).Find(&call)
+	err := json.NewEncoder(w).Encode(call)
+	if err != nil {
+		fmt.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func GetCallMessages(w http.ResponseWriter, r *http.Request) {
+	db := apiController.dep.DB
+	vars := mux.Vars(r)
+	callID, err := strconv.ParseUint(vars["id"], 10, 32)
+	if err != nil {
+		fmt.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	var messages []Message
+	var call Call
+	db.Where(&Message{CallID: uint(callID)}).Find(&messages)
+	db.Where(vars["id"]).Find(&call)
+	res := map[string]interface{}{
+		"call":     call,
+		"messages": messages,
+	}
+	err = json.NewEncoder(w).Encode(res)
+	if err != nil {
+		fmt.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 func CreateCall(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +119,6 @@ func ReceiveText(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println(string(requestBody))
-
 }
 
 func GetEvents(w http.ResponseWriter, r *http.Request) {
