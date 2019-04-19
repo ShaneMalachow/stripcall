@@ -19,7 +19,7 @@ func Connect(dbType string, connector string) *gorm.DB {
 	}
 
 	if err != nil {
-		return nil
+		panic("BAD DATABASE CONNECTION")
 	}
 
 	db.AutoMigrate(
