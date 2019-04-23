@@ -32,8 +32,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
-		fmt.Println(err.Error())
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		HandleError(&w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 }
@@ -42,8 +41,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	db := userController.dep.DB
 	requestBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("Error reading request")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		HandleError(&w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	user := &User{}
