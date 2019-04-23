@@ -1,4 +1,4 @@
-# stripcall
+# strip-call
 
 ## Project setup
 ```
